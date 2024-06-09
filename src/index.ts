@@ -61,7 +61,6 @@ export class Bot {
                 if ('data' in command.default && 'execute' in command.default) {
                     client.commands.set(command.default.data.name, command);
                     commands.push(command.default.data.toJSON());
-                    console.log(file);
                 } else {
                     logger.warn(`${file}のコマンドには、必須の 'data'、または'execute'プロパティがありません。`);
                 }
