@@ -55,20 +55,15 @@ export class Bot {
      */
     private async registerSlashCommands() {
         if (process.env.DISCORD_TOKEN) {
-            const foldersPath: string = path.join(__dirname, 'commands');
-            const commandFolders: string[] = fs.readdirSync(foldersPath);
-            for (const folder of commandFolders) {
-                const commandsPath: string = path.join(foldersPath, folder);
-                const commandFiles: string[] = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-                for (const file of commandFiles) {
-                    const filePath: string = path.join(commandsPath, file);
-                    const command: CustomCommand = await import(filePath);
-                    if ('data' in command.default && 'execute' in command.default) {
-                        client.commands.set(command.default.data.name, command);
-                        commands.push(command.default.data.toJSON());
-                    } else {
-                        logger.warn(`${filePath}のコマンドには、必須の "data "または "execute "プロパティがありません。`);
-                    }
+            const commandFiles: string[] = fs.readdirSync(path.join(__dirname, 'commands')).filter(file => file.endsWith('.js'));
+            for (const file of commandFiles) {
+                const command: CustomCommand = await import(path.join(__dirname, 'commands', `${file}`));
+                if ('data' in command.default && 'execute' in command.default) {
+                    client.commands.set(command.default.data.name, command);
+                    commands.push(command.default.data.toJSON());
+                    console.log(file);
+                } else {
+                    logger.warn(`${file}のコマンドには、必須の 'data'、または'execute'プロパティがありません。`);
                 }
             }
     

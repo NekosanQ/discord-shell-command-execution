@@ -11,14 +11,13 @@ export interface Config {
     clientId: string;
     developerGuildId: string;
     generalGuildId: string;
-    botColor: string;
 };
 
 // config.tomlが存在しない場合は、config.default.tomlをコピーする。
-if (!existsSync(getWorkdirPath('config.toml'))) {
+if (!existsSync(getWorkdirPath("config.toml"))) {
     copyFileSync(
-      getWorkdirPath('config.default.toml'),
-      getWorkdirPath('config.toml'),
+      getWorkdirPath("config.default.toml"),
+      getWorkdirPath("config.toml"),
     );
 }
 
